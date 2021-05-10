@@ -32,18 +32,19 @@ auth.post(
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    const user = UserModel.findOne({
-      $or: [
-        {
-          email: email,
-        },
-        {
-          username: username,
-        },
+    // const check = await UserModel.find({ password: password });
+    // const check1 = await UserModel.find({ email: email });
+    // const check2 = await UserModel.find({ username: username });
+    // const user = (check1 || check2) && check;
+
+    const user = await UserModel.find({
+      $and: [
+        { $or: [{ username: req.body.username }, { email: req.body.email }] },
+        { password: req.body.password },
       ],
-      password: password,
     });
-    if (user) {
+    if (user.length === 1) {
+      console.log(user.name);
       const access_token = await jwt.sign(
         { sub: username },
         process.env.JWT_ACCESS_TOKEN
