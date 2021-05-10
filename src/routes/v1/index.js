@@ -1,6 +1,6 @@
 import express from 'express'
 import userRoutes from "./profile/userRoutes.js";
-import todoRoutes from './todos/todoRoutes.js'
+
 
 const router = express.Router()
 
@@ -10,7 +10,7 @@ const router = express.Router()
 /*-------------------------------------------------------------------------*/
 
 router.use('/profiles', userRoutes)
-router.use('/todos', todoRoutes)
+
 
 
 export default router

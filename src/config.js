@@ -2,23 +2,6 @@
 export const environment = process.env.NODE_ENV;
 export const port = process.env.PORT;
 
-// POSTGRES
-export const pgDB = {
-  pgPort: process.env.PGPORT,
-  pgHost: process.env.PGHOST,
-  pgUser: process.env.PGUSER,
-  pgDatabase: process.env.PGDATABASE,
-  pgPassword: process.env.PGPASSWORD
-}
-
-// COCKROACH LABS DB - POSTGRES INTERFACE
-export const ccDB = {
-  ccPort: process.env.CCPORT,
-  ccHost: process.env.CCHOST,
-  ccUser: process.env.CCUSER,
-  ccDatabase: process.env.CCDATABASE,
-  ccPassword: process.env.CCPASSWORD
-}
 
 // MONGO ATLAS
 export const mongoDB = {
