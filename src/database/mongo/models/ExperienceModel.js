@@ -1,45 +1,47 @@
 import mongoose from "mongoose";
 
-const { Schema, model } = mongoose
+const { Schema, model } = mongoose;
 
-const ExperienceSchema = new Schema({
+const ExperienceSchema = new Schema(
+  {
     role: {
-        type: String,
-        required,
-        minLength: [3, 'Minimum length should be 5 characters'],
-        maxLength: [20, 'Maximum length should be 20 characters']
+      type: String,
+      required: true,
+      minLength: [3, "Minimum length should be 5 characters"],
+      maxLength: [20, "Maximum length should be 20 characters"],
     },
     company: {
-        name: String,
-        required
+      type: String,
+      required: true,
     },
     startDate: {
-        type: Date,
-        required
+      type: Date,
+      required: true,
     },
     endDate: {
-        type: Date,
-        required
+      type: Date,
+      required: true,
     },
     description: {
-        type: String,
-        required,
-        minlength: [5, 'Minimum length should be 5 characters'],
+      type: String,
+      required: true,
+      minLength: [5, "Minimum length should be 5 characters"],
     },
     area: {
-        type: String,
-        required,
+      type: String,
+      required: true,
     },
     username: {
-        type: String,
-        required,
+      type: String,
+      required: true,
     },
     image: {
-        type: String,
-        default: "https://www.mindmeister.com/blog/wp-content/uploads/2019/03/Document-Writing.png",
+      type: String,
+      default:
+        "https://www.mindmeister.com/blog/wp-content/uploads/2019/03/Document-Writing.png",
     },
-},
-    { timestamps: true },
+  },
+  { timestamps: true }
 );
 
-export default model("Experience", ExperienceSchema)
+export default model("Experience", ExperienceSchema);
