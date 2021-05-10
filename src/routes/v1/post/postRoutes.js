@@ -20,15 +20,15 @@ const router = express.Router();
 //   res.status(200).send(users)
 // }))
 
+router.route("/").get(asyncHandler(getAllPosts));
+
 router
-  .route("/")
-  .get(asyncHandler(getAllPosts))
+  .route("/:userId")
+  .get(asyncHandler(getAllPostsByUser))
   .post(asyncHandler(createNewPost));
 
-router.route("/:userId").get(asyncHandler(getAllPostsByUser));
-
 router
-  .route("/:postId")
+  .route("/:postId/user/:userId")
   .get(asyncHandler(getPostByID))
   .put(asyncHandler(editPost))
   .delete(asyncHandler(deletePost));
