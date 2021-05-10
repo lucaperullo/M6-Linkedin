@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import ExperienceModel from "./ExperienceModel";
+import ExperienceModel from "./ExperienceModel.js";
 
 const { Schema, model } = mongoose;
 const validateEmail = function (email) {
@@ -10,18 +10,18 @@ const UserSchema = new Schema(
   {
     name: {
       type: String,
-      required: "A name is required",
+      required: [true, "A name is required"],
     },
     surname: {
       type: String,
-      required: "A surname is required",
+      required: [true, "A surname is required"],
     },
     email: {
       type: String,
       trim: true,
       lowercase: true,
       unique: true,
-      required: "Email address is required",
+      required: [true, "Email address is required"],
       validate: [validateEmail, "Please fill a valid email address"],
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -30,21 +30,24 @@ const UserSchema = new Schema(
     },
     bio: {
       type: String,
-      required: "Come on! everyone wants to know a little more about you!",
+      required: [
+        true,
+        "Come on! everyone wants to know a little more about you!",
+      ],
       minLength: 10,
       maxLength: 500,
     },
     title: {
       type: String,
-      required: "A title is required",
+      required: [true, "A title is required"],
     },
     area: {
       type: String,
-      required: "An area is required",
+      required: [true, "An area is required"],
     },
     gender: {
       type: String,
-      required: "Gender is required",
+      required: [true, "Gender is required"],
     },
     image: {
       type: String,
@@ -60,7 +63,7 @@ const UserSchema = new Schema(
     },
     username: {
       type: String,
-      required: "A username is required",
+      required: [true, "A username is required"],
       maxLength: 15,
     },
     experiences: [ExperienceModel],
@@ -68,4 +71,4 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("user", UserSchema);
+export default model("User", UserSchema);
