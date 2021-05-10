@@ -2,6 +2,18 @@ import { port } from "./config.js";
 import Logger from "./core/loggerHandler.js";
 import app from "./app.js";
 import { connectToMongoDB } from "./database/mongo/index.js";
+// import { io } from "socket.io";
+// import express from "express";
+
+// io(express.Router({ cors: { origin: "*" } }));
+
+// io.on("connection", (socket) => {
+//   console.log("a user connected");
+//   socket.on("message", (message) => {
+//     console.log(message);
+//     io.emit("message", `${socket.id.substr(0, 2)} said ${message}`);
+//   });
+// });
 
 app
   .listen(port, async () => {

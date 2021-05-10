@@ -14,8 +14,7 @@ auth.post(
       const password = req.body.password;
       const access_token = await jwt.sign(
         { sub: username },
-        process.env.JWT_ACCESS_TOKEN,
-        { expiresIn: process.env.JWT_ACCESS_TIME }
+        process.env.JWT_ACCESS_TOKEN
       );
       res
         .send({
@@ -47,8 +46,7 @@ auth.post(
     if (user) {
       const access_token = await jwt.sign(
         { sub: username },
-        process.env.JWT_ACCESS_TOKEN,
-        { expiresIn: process.env.JWT_ACCESS_TIME }
+        process.env.JWT_ACCESS_TOKEN
       );
       return res.json({
         status: true,
