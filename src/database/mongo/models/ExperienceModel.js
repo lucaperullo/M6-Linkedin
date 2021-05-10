@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
-const ExperienceSchema = new Schema(
+export const ExperienceSchema = new Schema(
   {
     role: {
       type: String,
       required: true,
-      minLength: [3, "Minimum length should be 5 characters"],
-      maxLength: [20, "Maximum length should be 20 characters"],
+      minLength: 3,
+      maxLength: 20,
     },
     company: {
       type: String,
@@ -25,7 +25,7 @@ const ExperienceSchema = new Schema(
     description: {
       type: String,
       required: true,
-      minLength: [5, "Minimum length should be 5 characters"],
+      minlength: [5, "Minimum length should be 5 characters"],
     },
     area: {
       type: String,
