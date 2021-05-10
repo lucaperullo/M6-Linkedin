@@ -16,4 +16,16 @@ router.get(
   })
 );
 
+router.post(
+  "/",
+  asyncHandler(async (req, res, next) => {
+    const newUser = await UserModel.create(req.body);
+    res
+      .send({
+        message: `User created with this ID => ${newUser._id}`,
+      })
+      .status(201);
+  })
+);
+
 export default router;
