@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import ExperienceModel from "./ExperienceModel.js";
+import { ExperienceSchema } from "./ExperienceModel.js";
 
 const { Schema, model } = mongoose;
 const validateEmail = function (email) {
@@ -66,7 +66,7 @@ const UserSchema = new Schema(
       required: [true, "A username is required"],
       maxLength: 15,
     },
-    experiences: [ExperienceModel],
+    experiences: [ExperienceSchema],
   },
   { timestamps: true }
 );
