@@ -43,7 +43,6 @@ router.post(
   })
 );
 
-
 router.put(
   "/:id",
   asyncHandler(async (req, res, next) => {
@@ -63,11 +62,7 @@ router.delete(
     const user = await UserModel.findByIdAndDelete(req.params.id);
     if (user) {
       res.send({ message: "user destroyed" }).status(204);
-router.get(
-  "/:userId/experiences",
-  asyncHandler(async (req, res, next) => {
-    const { experiences } = await UserModel.findById(req.params.userId);
-    res.send(experiences);
+    }
   })
 );
 
@@ -84,7 +79,7 @@ router.get(
         },
       }
     );
-    res.send(experience);
+    res.send(experience).status(200);
   })
 );
 
@@ -204,7 +199,7 @@ router.post(
       },
       { new: true }
     );
-    res.send(modifiedUser);
+    res.send(modifiedUser).status(202);
   })
 );
 export default router;
