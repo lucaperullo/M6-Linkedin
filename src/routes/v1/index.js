@@ -10,8 +10,8 @@ const router = express.Router()
 // router.use('/', apikey);
 /*-------------------------------------------------------------------------*/
 
-router.use('/profiles', userRoutes)
-router.use('/post', postRoutes)
+router.use('/users', userRoutes)
+router.use('/posts', postRoutes)
 
 
 

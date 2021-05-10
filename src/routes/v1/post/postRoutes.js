@@ -7,25 +7,19 @@ import {
   createNewPost,
   editPost,
   deletePost,
+  postImage
 } from "./postControllers.js";
 
 const router = express.Router();
 
-// router.get('/', asyncHandler(async (req, res, next) => {
-
-//   const users = {}
-
-//   if (!users) next(new NotFoundError("Users not found"))
-
-//   res.status(200).send(users)
-// }))
 
 router.route("/").get(asyncHandler(getAllPosts));
 
 router
   .route("/:userId")
   .get(asyncHandler(getAllPostsByUser))
-  .post(asyncHandler(createNewPost));
+  .post(asyncHandler(createNewPost))
+  .post(asyncHandler(postImage));
 
 router
   .route("/:postId/user/:userId")
