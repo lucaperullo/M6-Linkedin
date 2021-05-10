@@ -6,7 +6,7 @@ import UserModel from "../../database/mongo/models/UserModel.js";
 const router = express.Router();
 
 router.get(
-  "/:userId/reviews",
+  "/:userId/experiences",
   asyncHandler(async (req, res, next) => {
     const experiences = await ExperienceModel.find();
     res.send(reviews);
@@ -14,9 +14,9 @@ router.get(
 );
 
 router.get(
-  "/:userId/reviews/:reviewId",
+  "/:userId/experiences/:experienceId",
   asyncHandler(async (req, res, next) => {
-    const experience = await ExperienceModel.findById(req.params.reviewId);
+    const experience = await ExperienceModel.findById(req.params.experienceId);
     res.send(experience);
   })
 );
@@ -39,5 +39,37 @@ router.post(
       }
     );
     res.send(experience);
+  })
+);
+
+router.put(
+  "/:userId/experiences/:experienceId",
+  asyncHandler(async (req, res, next) => {
+    const modifiedExperience = await ExperienceModel.findByIdAndUpdate(
+      {
+        _id: req.params.experienceId,
+        "experiences._id": req.params.experienceId,
+      },
+      {
+        $set: {
+          "experiences.$": {
+            ...req.body,
+            _id: req.params.experienceId,
+            updatedAt: new Date(),
+          },
+        },
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
+    if (modifiedExperience) {
+      res.send(modifiedExperience);
+    } else {
+      const error = new Error();
+      error.httpStatusCode = 404;
+      next(error);
+    }
   })
 );
