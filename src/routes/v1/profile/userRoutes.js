@@ -16,6 +16,16 @@ router.get(
   })
 );
 
+router.get(
+  "/:id",
+  asyncHandler(async (req, res, next) => {
+    const user = await UserModel.findById(req.params.id);
+    if (user) {
+      res.send(user).status(200);
+    }
+  })
+);
+
 router.post(
   "/",
   asyncHandler(async (req, res, next) => {
@@ -28,4 +38,26 @@ router.post(
   })
 );
 
+router.put(
+  "/:id",
+  asyncHandler(async (req, res, next) => {
+    const updatedUser = { ...req.body };
+    const user = await UserModel.findByIdAndUpdate(req.params.id, updatedUser, {
+      runValidators: true,
+      new: true,
+    });
+    if (user) {
+      res.send({ message: "User updated successfully" }).status(200);
+    }
+  })
+);
+router.delete(
+  "/:id",
+  asyncHandler(async (req, res, next) => {
+    const user = await UserModel.findByIdAndDelete(req.params.id);
+    if (user) {
+      res.send({ message: "user destroyed" }).status(204);
+    }
+  })
+);
 export default router;
