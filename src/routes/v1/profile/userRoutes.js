@@ -67,6 +67,14 @@ router.delete(
 );
 
 router.get(
+  "/:userId/experiences",
+  asyncHandler(async (req, res, next) => {
+    const { experiences } = await UserModel.findById(req.params.userId);
+    res.send(experiences).status(200);
+  })
+);
+
+router.get(
   "/:userId/experiences/:experienceId",
   asyncHandler(async (req, res, next) => {
     const experience = await UserModel.findById(
@@ -148,12 +156,9 @@ router.delete(
       { new: true }
     );
     if (modifiedUser) {
-      res.send("User experiences modified");
-    } else {
-      const error = new Error();
-      error.httpStatusCode = 404;
-      next(error);
+      new NotFoundError(`User not found!`);
     }
+    res.send("User experiences modified");
   })
 );
 
@@ -181,6 +186,7 @@ const cloudMulter = multer({
 
 router.post(
   "/:userId/upload/:experienceId",
+  cloudMulter.single("image"),
   asyncHandler(async (req, res, next) => {
     const modifiedUser = await UserModel.findByIdAndUpdate(
       {
@@ -190,16 +196,21 @@ router.post(
       {
         $set: {
           "experiences.$": {
-            ...req.body,
             image: req.file.path,
             _id: req.params.experienceId,
-            updatedAt: new Date(),
+            updated_At: new Date(),
           },
         },
       },
-      { new: true }
+      { runValidators: true, new: true }
     );
-    res.send(modifiedUser).status(202);
+    res.status(202).send(modifiedUser);
+
+    if (!modifiedUser) {
+      new BadRequestError(`Error while uploading picture`);
+    }
+
+    res.status(201).send(modifiedUser);
   })
 );
 export default router;
