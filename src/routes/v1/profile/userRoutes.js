@@ -24,8 +24,8 @@ router.get(
   "/me",
   asyncHandler(async (req, res, next) => {
     const key = req.headers.authorization.split(" ")[1];
+
     const users = await UserModel.findOne();
-    axios.get("http://localhost:5000/users/");
     if (!users) next(new NotFoundError("User not found"));
 
     res.status(200).send(users);
