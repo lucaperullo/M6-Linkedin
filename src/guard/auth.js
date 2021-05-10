@@ -8,8 +8,9 @@ function verifyToken(req, res, next) {
   try {
     const token = req.headers.authorization.split(" ")[1];
 
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
+    const decoded = await jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
     req.userData = decoded;
+    //
     next();
   } catch (error) {
     return res.status(401).json({
@@ -20,11 +21,11 @@ function verifyToken(req, res, next) {
   }
 }
 
-auth.post("/login", verifyToken, (req, res) => {
+auth.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   if (username && password) {
-    const access_token = jwt.sign(
+    const access_token = await jwt.sign(
       { sub: username },
       process.env.JWT_ACCESS_TOKEN,
       { expiresIn: process.env.JWT_ACCESS_TIME }
