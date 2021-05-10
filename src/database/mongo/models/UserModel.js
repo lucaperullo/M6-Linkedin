@@ -3,7 +3,7 @@ import { ExperienceSchema } from "./ExperienceModel.js";
 
 const { Schema, model } = mongoose;
 const validateEmail = function (email) {
-  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
   return re.test(email);
 };
 const UserSchema = new Schema(
@@ -24,7 +24,7 @@ const UserSchema = new Schema(
       required: [true, "Email address is required"],
       validate: [validateEmail, "Please fill a valid email address"],
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/,
         "Please fill a valid email address",
       ],
     },
