@@ -30,6 +30,6 @@ app.use((req, res, next) => {
 // ERROR HANDLERS
 app.use(errorHandler)
 
-console.log(listEndpoints(app))
+console.table(listEndpoints(app))
 
 export default app
