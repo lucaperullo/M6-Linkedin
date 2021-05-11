@@ -13,15 +13,13 @@ auth.post(
       const email = req.body.email;
       const password = req.body.password;
       const access_token = await jwt.sign(
-        { sub: username },
+        { sub: newUser._id },
         process.env.JWT_ACCESS_TOKEN
       );
-      res
-        .send({
-          message: `User created with this ID => ${newUser._id}`,
-          access_token: `${access_token}`,
-        })
-        .status(201);
+      res.status(201).send({
+        message: `User created with this ID => ${newUser._id}`,
+        access_token: `${access_token}`,
+      });
     }
   })
 );
@@ -32,6 +30,7 @@ auth.post(
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+
     // const check = await UserModel.find({ password: password });
     // const check1 = await UserModel.find({ email: email });
     // const check2 = await UserModel.find({ username: username });
@@ -45,7 +44,7 @@ auth.post(
     });
     if (user.length === 1) {
       const access_token = await jwt.sign(
-        { sub: username },
+        { sub: user._id },
         process.env.JWT_ACCESS_TOKEN
       );
       return res.json({
@@ -54,7 +53,7 @@ auth.post(
         data: { access_token },
       });
     } else {
-      res.send("User not found").status(404);
+      res.status(404).send("User not found");
     }
   })
 );

@@ -13,7 +13,9 @@ export const getAllPosts = async (req, res, next) => {
 export const getAllPostsByUser = async (req, res, next) => {
   if (!req.params.userId)
     next(new BadRequestError("Opps! seems this user doesn't exists"));
-  const postsByUser = await postModel.findById(req.params.postId);
+  const postsByUser = await postModel.find({
+    userId: mongoose.Types.ObjectId(req.params.userId),
+  });
   if (!postsByUser)
     next(new NotFoundError("Nothing posted yet from this user"));
   res.status(200).send(postsByUser);
@@ -39,7 +41,7 @@ export const getPostByID = async (req, res, next) => {
 };
 
 export const editPost = async (req, res, next) => {
-  const post = await postModel.findByIdAndUpdate(req.params.id, req.body, {
+  const post = await postModel.findByIdAndUpdate(req.params.postId, req.body, {
     runValidators: true,
     new: true,
   });

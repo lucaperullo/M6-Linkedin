@@ -13,18 +13,18 @@ import {
 const router = express.Router();
 
 
-router.route("/").get(asyncHandler(getAllPosts));
+router.route("/").get(asyncHandler(getAllPosts)); // Ok
 
 router
   .route("/:userId")
-  .get(asyncHandler(getAllPostsByUser))
-  .post(asyncHandler(createNewPost))
-  .post(asyncHandler(postImage));
+  .get(asyncHandler(getAllPostsByUser))  //  Ok
+  .post(asyncHandler(createNewPost)) // Ok
+  .post(asyncHandler(postImage)); // *
 
 router
   .route("/:postId/user/:userId")
-  .get(asyncHandler(getPostByID))
-  .put(asyncHandler(editPost))
-  .delete(asyncHandler(deletePost));
+  .get(asyncHandler(getPostByID)) //Ok
+  .put(asyncHandler(editPost)) // Ok
+  .delete(asyncHandler(deletePost)); // Ok
 
 export default router;
