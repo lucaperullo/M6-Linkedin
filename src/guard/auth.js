@@ -44,7 +44,6 @@ auth.post(
       ],
     });
     if (user.length === 1) {
-      console.log(user.name);
       const access_token = await jwt.sign(
         { sub: username },
         process.env.JWT_ACCESS_TOKEN
