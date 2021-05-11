@@ -41,6 +41,7 @@ export const uploadImagePostMddw = multer({
   storage: cloudStorage,
   fileFilter: function (req, file, next) {
     if (file) {
+      console.log("$$$$$$$$$$$", file);
       const acceptedExtensions = [".png", ".jpg", ".gif", "bmp", ".jpeg"];
       if (!acceptedExtensions.includes(extname(file.originalname))) {
         return next(
@@ -49,6 +50,7 @@ export const uploadImagePostMddw = multer({
           )
         );
       }
+      next(null, true);
     } else {
       next(null, true);
     }
@@ -61,6 +63,7 @@ export const createNewPost = async (req, res, next) => {
       new BadRequestError("only user registered can post, user need to have ID")
     );
   if (!req.file) {
+    console.log(req.file);
     const post = { ...req.body, userId: req.params.userId };
     const newPost = new postModel(post);
     await newPost.save();
