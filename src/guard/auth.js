@@ -44,7 +44,7 @@ auth.post(
     });
     if (user.length === 1) {
       const access_token = await jwt.sign(
-        { sub: user._id },
+        { sub: user },
         process.env.JWT_ACCESS_TOKEN
       );
       return res.json({
