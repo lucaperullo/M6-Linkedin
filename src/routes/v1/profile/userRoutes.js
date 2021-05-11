@@ -7,6 +7,7 @@ import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { extname } from "path";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -23,12 +24,13 @@ router.get(
 router.get(
   "/me",
   asyncHandler(async (req, res, next) => {
-    const key = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
 
-    const users = await UserModel.findOne();
-    if (!users) next(new NotFoundError("User not found"));
+    const decoded = await jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
+    const user = (req.userData = decoded).sub[0];
 
-    res.status(200).send(users);
+    console.log(user);
+    return res.status(200).send(user);
   })
 );
 router.get(
@@ -185,28 +187,30 @@ const cloudMulter = multer({
 router.post(
   "/:userId/upload/:experienceId",
   cloudMulter.single("image"),
-  async (req, res, next) => {
-    try {
-      const modifiedUser = await UserModel.findOneAndUpdate(
-        {
-          _id: req.params.userId,
-          "experiences._id": req.params.experienceId,
-        },
-        {
-          $set: {
-            "experiences.$.image": req.file.path,
+  asyncHandler(async (req, res, next) => {
+    const modifiedUser = await UserModel.findByIdAndUpdate(
+      {
+        _id: req.params.userId,
+        "experiences._id": req.params.experienceId,
+      },
+      {
+        $set: {
+          "experiences.$": {
+            image: req.file.path,
+            _id: req.params.experienceId,
+            updated_At: new Date(),
           },
         },
-        { new: true }
-      );
+      },
+      { runValidators: true, new: true }
+    );
+    res.status(202).send(modifiedUser);
 
-      if (!modifiedUser) {
-        new BadRequestError(`Error while uploading picture`);
-      }
-      res.status(201).send(modifiedUser);
-    } catch (error) {
-      new BadRequestError(`Error`);
+    if (!modifiedUser) {
+      new BadRequestError(`Error while uploading picture`);
     }
-  }
+
+    res.status(201).send(modifiedUser);
+  })
 );
 export default router;

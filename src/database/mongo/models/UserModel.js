@@ -57,7 +57,7 @@ const UserSchema = new Schema(
         } else if (this.gender === "N/D") {
           return "http://simpleicon.com/wp-content/uploads/user1.svg";
         } else if (this.gender === "female") {
-          return "https://cdn.icon-icons.com/icons2/1736/PNG/512/4043251-avatar-female-girl-woman_113291.png";
+          return "https://media.discordapp.net/attachments/841212509343580162/841650806557114418/4043251-avatar-female-girl-woman_113291.png?width=480&height=480";
         }
       },
     },
