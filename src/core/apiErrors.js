@@ -54,6 +54,9 @@ export class NotFoundError extends Error {
 
 export class ForbiddenError extends Error {
   /*403 Forbidden
+    Receiving a 403 response is the server telling you, “I’m sorry. I know who you are–I believe who you say you are–but 
+    you just don’t have permission to access this resource. Maybe if you ask the system administrator nicely, you’ll get permission. 
+    But please don’t bother me again until your predicament changes.”
     The 403 status code, or a Forbidden error, means that the user made a valid request but the server is refusing to serve the
     request, due to a lack of permission to access the requested resource. If you are encountering a 403 error unexpectedly,
     there are a few typical causes that are explained here.
