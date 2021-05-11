@@ -6,15 +6,13 @@ import { BadRequestError, NotFoundError } from "../../../core/apiErrors.js";
 
 //This get all posts should be to populate the feed
 export const getAllPosts = async (req, res, next) => {
-  const posts = await postModel.find().sort({ field: 'startDate', test: -1 }).populate("user");
+  const posts = await postModel.find().populate("user");
   res.status(200).send(posts);
 };
 
 export const getAllPostsByUser = async (req, res, next) => {
-    if (!req.params.userId)
-    next(
-      new BadRequestError("Opps! seems this user doesn't exists")
-    );  
+  if (!req.params.userId)
+    next(new BadRequestError("Opps! seems this user doesn't exists"));
   const postsByUser = await postModel.findById(req.params.postId);
   if (!postsByUser)
     next(new NotFoundError("Nothing posted yet from this user"));
@@ -26,14 +24,13 @@ export const createNewPost = async (req, res, next) => {
     next(
       new BadRequestError("only user registered can post, user need to have ID")
     );
-  const newPost = new postModel(req.body);
+  const post = { ...req.body, userId: req.params.userId };
+  const newPost = new postModel(post);
   await newPost.save();
   res.status(201).send(newPost);
 };
 
-export const postImage = async (req,res,next) =>{
-
-}
+export const postImage = async (req, res, next) => {};
 
 export const getPostByID = async (req, res, next) => {
   const post = await postModel.findById(req.params.postId);
