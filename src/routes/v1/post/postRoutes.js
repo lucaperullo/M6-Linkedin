@@ -18,11 +18,11 @@ router.route("/").get(asyncHandler(getAllPosts)); // Ok
 router
   .route("/:userId")
   .get(asyncHandler(getAllPostsByUser)) //  Ok
-  .post(asyncHandler(createNewPost)); // Ok
+  .post(uploadImagePostMddw.single("imagePost"), asyncHandler(createNewPost)); // Ok
 
 router
   .route("/:postId/user/:userId")
-  .post(uploadImagePostMddw.single("imagePost"), asyncHandler(postImage)) // *
+  .post(uploadImagePostMddw.single("imagePost"), asyncHandler(postImage)) // Ok
   .get(asyncHandler(getPostByID)) //Ok
   .put(asyncHandler(editPost)) // Ok
   .delete(asyncHandler(deletePost)); // Ok

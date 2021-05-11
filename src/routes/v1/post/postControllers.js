@@ -14,7 +14,7 @@ import {
   ForbiddenError,
 } from "../../../core/apiErrors.js";
 
-//This get all posts should be to populate the feed
+//This get all posts should be to populate the feed // Missing pagination here!!!!!!
 export const getAllPosts = async (req, res, next) => {
   const posts = await postModel.find().populate("user");
   res.status(200).send(posts);
@@ -30,18 +30,6 @@ export const getAllPostsByUser = async (req, res, next) => {
     next(new NotFoundError("Nothing posted yet from this user"));
   res.status(200).send(postsByUser);
 };
-
-export const createNewPost = async (req, res, next) => {
-  if (!req.params.userId)
-    next(
-      new BadRequestError("only user registered can post, user need to have ID")
-    );
-  const post = { ...req.body, userId: req.params.userId };
-  const newPost = new postModel(post);
-  await newPost.save();
-  res.status(201).send(newPost);
-};
-
 const cloudStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -52,17 +40,38 @@ const cloudStorage = new CloudinaryStorage({
 export const uploadImagePostMddw = multer({
   storage: cloudStorage,
   fileFilter: function (req, file, next) {
-    const acceptedExtensions = [".png", ".jpg", ".gif", "bmp", ".jpeg"];
-    if (!acceptedExtensions.includes(extname(file.originalname))) {
-      return next(
-        new ErrorResponse(
-          `Image type not allowed: ${extname(file.originalname)}`
-        )
-      );
+    if (file) {
+      const acceptedExtensions = [".png", ".jpg", ".gif", "bmp", ".jpeg"];
+      if (!acceptedExtensions.includes(extname(file.originalname))) {
+        return next(
+          new ErrorResponse(
+            `Image type not allowed: ${extname(file.originalname)}`
+          )
+        );
+      }
+    } else {
+      next(null, true);
     }
-    next(null, true);
   },
 });
+
+export const createNewPost = async (req, res, next) => {
+  if (!req.params.userId)
+    next(
+      new BadRequestError("only user registered can post, user need to have ID")
+    );
+  if (!req.file) {
+    const post = { ...req.body, userId: req.params.userId };
+    const newPost = new postModel(post);
+    await newPost.save();
+    res.status(201).send(newPost);
+  } else {
+    const post = { ...req.body, userId: req.params.userId, img: req.file.path };
+    const newPost = new postModel(post);
+    await newPost.save();
+    res.status(201).send(newPost);
+  }
+};
 
 export const postImage = async (req, res, next) => {
   const isUser = await UserModel.findById(req.params.userId);
