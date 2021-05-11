@@ -6,7 +6,7 @@ export default async function verifyToken(req, res, next) {
 
     const decoded = await jwt.verify(token, process.env.JWT_ACCESS_TOKEN);
     req.userData = decoded;
-    //
+
     next();
   } catch (error) {
     const token = req.headers.authorization.split(" ")[1];
