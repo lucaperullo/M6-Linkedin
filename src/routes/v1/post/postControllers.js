@@ -148,11 +148,35 @@ export const deletePost = async (req, res, next) => {
 export const createComment = async (req, res, next) => {
   const comment = new CommentModel(req.body);
   const newComment = { ...comment.toObject() };
-  await postModel.findByIdAndUpdate(
-    req.params.postId,
+
+  const post = await postModel.findById(req.params.postId);
+  if (post) {
+    await postModel.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $push: {
+          comments: { ...newComment, userId: req.params.userId },
+        },
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
+    res.status(201).send(newComment);
+  }
+  next(new NotFoundError(`Post with this Id is not found!`));
+};
+
+export const updateComment = async (req, res, next) => {
+  const editedPost = await postModel.findOneAndUpdate(
     {
-      $push: {
-        comments: { ...newComment },
+      _id: req.params.postId,
+      "comments._id": req.params.commentId,
+    },
+    {
+      $set: {
+        "comments.$.comment": req.body.comment,
       },
     },
     {
@@ -160,5 +184,22 @@ export const createComment = async (req, res, next) => {
       new: true,
     }
   );
-  res.status(201).send(newComment);
+  if (!editedPost) next(new NotFoundError(`Post with this Id not found`));
+  res.status(201).send(editedPost);
+};
+
+export const deleteComment = async (req, res, next) => {
+  const editedPost = await postModel.findByIdAndUpdate(
+    {
+      _id: req.params.postId,
+    },
+    {
+      $pull: {
+        comments: { _id: req.params.commentId },
+      },
+    },
+    { new: true }
+  );
+  if (!editedPost) next(new NotFoundError(`Post with this Id not found`));
+  res.status(201).send(editedPost);
 };

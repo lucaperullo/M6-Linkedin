@@ -10,6 +10,8 @@ import {
   postImage,
   uploadImagePostMddw,
   createComment,
+  updateComment,
+  deleteComment,
 } from "./postControllers.js";
 
 const router = express.Router();
@@ -34,6 +36,10 @@ router
 
 // router.route("/:userId/:postId/comments").get(asyncHandler(getAllComments));
 
-router.route("/:postId/comment").post(asyncHandler(createComment));
+router.route("/:postId/user/:userId/comment").post(asyncHandler(createComment));
+router
+  .route("/:postId/user/:userId/comment/:commentId")
+  .put(asyncHandler(updateComment))
+  .delete(asyncHandler(deleteComment));
 
 export default router;
