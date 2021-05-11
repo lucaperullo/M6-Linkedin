@@ -187,30 +187,28 @@ const cloudMulter = multer({
 router.post(
   "/:userId/upload/:experienceId",
   cloudMulter.single("image"),
-  asyncHandler(async (req, res, next) => {
-    const modifiedUser = await UserModel.findByIdAndUpdate(
-      {
-        _id: req.params.userId,
-        "experiences._id": req.params.experienceId,
-      },
-      {
-        $set: {
-          "experiences.$": {
-            image: req.file.path,
-            _id: req.params.experienceId,
-            updated_At: new Date(),
+  async (req, res, next) => {
+    try {
+      const modifiedUser = await UserModel.findOneAndUpdate(
+        {
+          _id: req.params.userId,
+          "experiences._id": req.params.experienceId,
+        },
+        {
+          $set: {
+            "experiences.$.image": req.file.path,
           },
         },
-      },
-      { runValidators: true, new: true }
-    );
-    res.status(202).send(modifiedUser);
+        { new: true }
+      );
 
-    if (!modifiedUser) {
-      new BadRequestError(`Error while uploading picture`);
+      if (!modifiedUser) {
+        new BadRequestError(`Error while uploading picture`);
+      }
+      res.status(201).send(modifiedUser);
+    } catch (error) {
+      new BadRequestError(`Error`);
     }
-
-    res.status(201).send(modifiedUser);
-  })
+  }
 );
 export default router;
