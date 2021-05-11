@@ -66,6 +66,7 @@ const UserSchema = new Schema(
       required: [true, "A username is required"],
       maxLength: 15,
     },
+    password: { type: String, select: false, required: true },
     experiences: [ExperienceSchema],
   },
   { timestamps: true }

@@ -20,7 +20,17 @@ router.get(
     res.status(200).send(users);
   })
 );
+router.get(
+  "/me",
+  asyncHandler(async (req, res, next) => {
+    const key = req.headers.authorization.split(" ")[1];
 
+    const users = await UserModel.findOne();
+    if (!users) next(new NotFoundError("User not found"));
+
+    res.status(200).send(users);
+  })
+);
 router.get(
   "/:id",
   asyncHandler(async (req, res, next) => {
@@ -28,18 +38,6 @@ router.get(
     if (user) {
       res.send(user).status(200);
     }
-  })
-);
-
-router.post(
-  "/",
-  asyncHandler(async (req, res, next) => {
-    const newUser = await UserModel.create(req.body);
-    res
-      .send({
-        message: `User created with this ID => ${newUser._id}`,
-      })
-      .status(201);
   })
 );
 
