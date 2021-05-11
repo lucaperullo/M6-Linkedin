@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema, model } = mongoose;
+const { Schema, model } = mongoose; //mongoose
 
 export const ExperienceSchema = new Schema({
   role: {

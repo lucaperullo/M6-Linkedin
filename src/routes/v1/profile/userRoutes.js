@@ -3,13 +3,10 @@ import { asyncHandler } from "../../../core/asyncHandler.js";
 import { BadRequestError, NotFoundError } from "../../../core/apiErrors.js";
 import UserModel from "../../../database/mongo/models/UserModel.js";
 import ExperienceModel from "../../../database/mongo/models/ExperienceModel.js";
-<<<<<<< HEAD
-=======
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { extname } from "path";
->>>>>>> master
 
 const router = express.Router();
 
@@ -71,26 +68,16 @@ router.get(
   "/:userId/experiences",
   asyncHandler(async (req, res, next) => {
     const { experiences } = await UserModel.findById(req.params.userId);
-<<<<<<< HEAD
-    res.send(experiences);
-=======
     res.send(experiences).status(200);
->>>>>>> master
   })
 );
 
 router.get(
   "/:userId/experiences/:experienceId",
   asyncHandler(async (req, res, next) => {
-<<<<<<< HEAD
-    const experience = await UserModel.findOne(
-      {
-        _id: req.params.experienceId,
-=======
     const experience = await UserModel.findById(
       {
         _id: req.params.userId,
->>>>>>> master
       },
       {
         experiences: {
@@ -98,35 +85,20 @@ router.get(
         },
       }
     );
-<<<<<<< HEAD
-    res.send(experience);
-=======
     res.send(experience).status(200);
->>>>>>> master
   })
 );
 
 router.post(
-<<<<<<< HEAD
-  "/userId/experiences",
-  asyncHandler(async (req, res, next) => {
-    const newExperience = new ExperienceModel(req.body);
-    const experience = { ...newExperience.toObject };
-=======
   "/:userId/experiences",
   asyncHandler(async (req, res, next) => {
     const newExperience = new ExperienceModel(req.body);
     const experience = { ...newExperience.toObject() };
->>>>>>> master
     await UserModel.findByIdAndUpdate(
       req.params.userId,
       {
         $push: {
-<<<<<<< HEAD
-          experiences: { ...experience },
-=======
           experiences: { ...experience, created_At: new Date() },
->>>>>>> master
         },
       },
       {
@@ -134,26 +106,16 @@ router.post(
         new: true,
       }
     );
-<<<<<<< HEAD
-    res.send(experience);
-=======
     res.send(experience).status(201);
->>>>>>> master
   })
 );
 
 router.put(
   "/:userId/experiences/:experienceId",
   asyncHandler(async (req, res, next) => {
-<<<<<<< HEAD
-    const modifiedExperience = await UserModel.findByIdAndUpdate(
-      {
-        _id: req.params.experienceId,
-=======
     const modifiedExperience = await UserModel.findOneAndUpdate(
       {
         _id: req.params.userId,
->>>>>>> master
         "experiences._id": req.params.experienceId,
       },
       {
@@ -161,11 +123,7 @@ router.put(
           "experiences.$": {
             ...req.body,
             _id: req.params.experienceId,
-<<<<<<< HEAD
-            updatedAt: new Date(),
-=======
             updated_At: new Date(),
->>>>>>> master
           },
         },
       },
@@ -174,20 +132,10 @@ router.put(
         new: true,
       }
     );
-<<<<<<< HEAD
-    if (modifiedExperience) {
-      res.send(modifiedExperience);
-    } else {
-      const error = new Error();
-      error.httpStatusCode = 404;
-      next(error);
-    }
-=======
     if (!modifiedExperience) {
       new NotFoundError(`User not found!`);
     }
     res.status(202).send(modifiedExperience);
->>>>>>> master
   })
 );
 
@@ -206,18 +154,9 @@ router.delete(
       { new: true }
     );
     if (modifiedUser) {
-<<<<<<< HEAD
-      res.send("User experiences modified");
-    } else {
-      const error = new Error();
-      error.httpStatusCode = 404;
-      next(error);
-    }
-=======
       new NotFoundError(`User not found!`);
     }
     res.send("User experiences modified");
->>>>>>> master
   })
 );
 
@@ -245,30 +184,6 @@ const cloudMulter = multer({
 
 router.post(
   "/:userId/upload/:experienceId",
-<<<<<<< HEAD
-  asyncHandler(async (req, res, next) => {
-    const modifiedUser = await UserModel.findByIdAndUpdate(
-      {
-        _id: req.params.userId,
-        "experiences._id": req.params.experienceId,
-      },
-      {
-        $set: {
-          "experiences.$": {
-            ...req.body,
-            image: req.file.path,
-            _id: req.params.experienceId,
-            updatedAt: new Date(),
-          },
-        },
-      },
-      { new: true }
-    );
-    res.send(modifiedUser);
-  })
-);
-
-=======
   cloudMulter.single("image"),
   async (req, res, next) => {
     try {
@@ -294,5 +209,4 @@ router.post(
     }
   }
 );
->>>>>>> master
 export default router;
