@@ -2,6 +2,7 @@ import express from "express";
 import q2m from "query-to-mongo";
 import mongoose from "mongoose";
 import postModel from "../../../database/mongo/models/PostModel.js";
+import CommentModel from "../../../database/mongo/models/CommentModel.js";
 import { BadRequestError, NotFoundError } from "../../../core/apiErrors.js";
 
 //This get all posts should be to populate the feed

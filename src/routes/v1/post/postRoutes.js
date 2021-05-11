@@ -7,17 +7,16 @@ import {
   createNewPost,
   editPost,
   deletePost,
-  postImage
+  postImage,
 } from "./postControllers.js";
 
 const router = express.Router();
-
 
 router.route("/").get(asyncHandler(getAllPosts)); // Ok
 
 router
   .route("/:userId")
-  .get(asyncHandler(getAllPostsByUser))  //  Ok
+  .get(asyncHandler(getAllPostsByUser)) //  Ok
   .post(asyncHandler(createNewPost)) // Ok
   .post(asyncHandler(postImage)); // *
 
@@ -26,5 +25,9 @@ router
   .get(asyncHandler(getPostByID)) //Ok
   .put(asyncHandler(editPost)) // Ok
   .delete(asyncHandler(deletePost)); // Ok
+
+// *****************COMMENTS ROUTES ***************
+
+router.route("/:userId/:postId/comments").get(asyncHandler(getAllComments));
 
 export default router;
