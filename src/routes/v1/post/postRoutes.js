@@ -8,10 +8,8 @@ import {
   editPost,
   deletePost,
   postImage,
-<<<<<<< HEAD
-=======
   uploadImagePostMddw,
->>>>>>> 650fdb4d56e71c2430220ace79dbaf594fc6fb1f
+  createComment,
 } from "./postControllers.js";
 
 const router = express.Router();
@@ -21,12 +19,9 @@ router.route("/").get(asyncHandler(getAllPosts)); // Ok
 router
   .route("/:userId")
   .get(asyncHandler(getAllPostsByUser)) //  Ok
-<<<<<<< HEAD
   .post(asyncHandler(createNewPost)) // Ok
-  .post(asyncHandler(postImage)); // *
-=======
+  .post(asyncHandler(postImage)) // *
   .post(uploadImagePostMddw.single("imagePost"), asyncHandler(createNewPost)); // Ok
->>>>>>> 650fdb4d56e71c2430220ace79dbaf594fc6fb1f
 
 router
   .route("/:postId/user/:userId")
@@ -37,6 +32,8 @@ router
 
 // *****************COMMENTS ROUTES ***************
 
-router.route("/:userId/:postId/comments").get(asyncHandler(getAllComments));
+// router.route("/:userId/:postId/comments").get(asyncHandler(getAllComments));
+
+router.route("/:postId/comment").post(asyncHandler(createComment));
 
 export default router;

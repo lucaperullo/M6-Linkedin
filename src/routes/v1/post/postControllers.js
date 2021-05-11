@@ -6,18 +6,14 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { extname } from "path";
 import mongoose from "mongoose";
 import postModel from "../../../database/mongo/models/PostModel.js";
-<<<<<<< HEAD
-import CommentModel from "../../../database/mongo/models/CommentModel.js";
-import { BadRequestError, NotFoundError } from "../../../core/apiErrors.js";
-=======
 import UserModel from "../../../database/mongo/models/UserModel.js";
+import CommentModel from "../../../database/mongo/models/CommentModel.js";
 import {
   BadRequestError,
   NotFoundError,
   UnauthorizedError,
   ForbiddenError,
 } from "../../../core/apiErrors.js";
->>>>>>> 650fdb4d56e71c2430220ace79dbaf594fc6fb1f
 
 //This get all posts should be to populate the feed // Missing pagination here!!!!!!
 export const getAllPosts = async (req, res, next) => {
@@ -142,4 +138,24 @@ export const deletePost = async (req, res, next) => {
   const post = await postModel.findByIdAndDelete(req.params.postId);
   if (!post) next(new NotFoundError("Post not found"));
   res.status(204).send();
+};
+
+// *********************COMMENTS ROUTES ***************************
+
+export const createComment = async (req, res, next) => {
+  const comment = new CommentModel(req.body);
+  const newComment = { ...comment.toObject() };
+  await postModel.findByIdAndUpdate(
+    req.params.postId,
+    {
+      $push: {
+        comments: { ...newComment },
+      },
+    },
+    {
+      runValidators: true,
+      new: true,
+    }
+  );
+  res.status(201).send(newComment);
 };

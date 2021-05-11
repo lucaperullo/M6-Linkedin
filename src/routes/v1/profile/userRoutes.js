@@ -108,7 +108,7 @@ router.post(
         new: true,
       }
     );
-    res.send(experience).status(201);
+    res.status(201).send(experience);
   })
 );
 
