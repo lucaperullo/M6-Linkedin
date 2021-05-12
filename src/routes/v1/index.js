@@ -8,7 +8,7 @@ const router = express.Router();
 
 /*-------------------------------------------------------------------------*/
 // Below all APIs are public APIs protected by jwt-key
-// router.use('/', verifyToken, yourRoute);
+// router.use('/', verifyToken);
 /*-------------------------------------------------------------------------*/
 
 router.use("/", auth); //we dont need to verify for the login becouse we re finding the only one user with that username/email and password
