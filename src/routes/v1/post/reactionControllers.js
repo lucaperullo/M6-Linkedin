@@ -41,8 +41,6 @@ export const reactionPost = async (req, res, next) => {
         new: true,
       }
     );
-    const numberOfLikes = editedPost.aggregate.count("likes");
-    console.log(numberOfLikes, "AAAAAAAAAAAAAAAAAAAAAAAA");
     res.status(201).send(editedPost);
   } else {
     const deleteLike = await postModel.findByIdAndUpdate(
@@ -62,11 +60,3 @@ export const reactionPost = async (req, res, next) => {
   }
 };
 
-export const countReactions = async (req, res, next) => {};
-
-export const deletePost = async (req, res, next) => {
-  if (!req.params.postId) next(new BadRequestError("This id doesn't exist"));
-  const post = await postModel.findByIdAndDelete(req.params.postId);
-  if (!post) next(new NotFoundError("Post not found"));
-  res.status(204).send();
-};
