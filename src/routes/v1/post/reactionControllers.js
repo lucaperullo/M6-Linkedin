@@ -29,14 +29,6 @@ export const reactionPost = async (req, res, next) => {
         },
       },
       {
-        $group: {
-          userId: {
-            total: $post[newArray],
-          },
-          count: { $sum: 1 },
-        },
-      },
-      {
         runValidators: true,
         new: true,
       }
@@ -60,13 +52,4 @@ export const reactionPost = async (req, res, next) => {
     );
     res.status(200).send(deleteLike);
   }
-};
-
-export const countReactions = async (req, res, next) => {};
-
-export const deletePost = async (req, res, next) => {
-  if (!req.params.postId) next(new BadRequestError("This id doesn't exist"));
-  const post = await postModel.findByIdAndDelete(req.params.postId);
-  if (!post) next(new NotFoundError("Post not found"));
-  res.status(204).send();
 };
