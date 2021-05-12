@@ -211,7 +211,6 @@ router.post(
 );
 router.put("/:id/upload", cloudMulter.single("img"), async (req, res, next) => {
   try {
-    console.log("hey");
     const alteredPost = await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       { image: req.file.path },
