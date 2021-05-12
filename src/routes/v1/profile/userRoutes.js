@@ -209,27 +209,23 @@ router.post(
     res.status(201).send(modifiedUser);
   })
 );
-router.put(
-  "/:id/upload/luca",
-  cloudMulter.single("img"),
-  async (req, res, next) => {
-    try {
-      console.log("hey");
-      const alteredPost = await UserModel.findOneAndUpdate(
-        { _id: req.params.id },
-        { image: req.file.path },
-        {
-          runValidators: true,
-          new: true,
-        }
-      );
+router.put("/:id/upload", cloudMulter.single("img"), async (req, res, next) => {
+  try {
+    console.log("hey");
+    const alteredPost = await UserModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { image: req.file.path },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
 
-      res.status(201).send(alteredPost);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Something went bad!");
-    }
+    res.status(201).send(alteredPost);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something went bad!");
   }
-);
+});
 
 export default router;
