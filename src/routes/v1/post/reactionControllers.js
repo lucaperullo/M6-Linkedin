@@ -29,14 +29,6 @@ export const reactionPost = async (req, res, next) => {
         },
       },
       {
-        $group: {
-          userId: {
-            total: $post[newArray],
-          },
-          count: { $sum: 1 },
-        },
-      },
-      {
         runValidators: true,
         new: true,
       }
@@ -59,4 +51,3 @@ export const reactionPost = async (req, res, next) => {
     res.status(200).send(deleteLike);
   }
 };
-
