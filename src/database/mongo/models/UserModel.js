@@ -49,6 +49,7 @@ const UserSchema = new Schema(
       type: String,
       required: [true, "Gender is required"],
     },
+    posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
     image: {
       type: String,
       default: function () {

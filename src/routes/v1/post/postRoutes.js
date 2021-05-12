@@ -46,21 +46,13 @@ router
 // *****************LIKE, CLAP, IDEA, FAVORITES, THOUGHTFUL => ROUTES ***************
 
 router.route("/:postId/user/:userId/like").post(asyncHandler(reactionPost));
-router
-  .route("/:postId/user/:userId/clap")
-  .post(asyncHandler())
-  .delete(asyncHandler());
-router
-  .route("/:postId/user/:userId/idea")
-  .post(asyncHandler())
-  .delete(asyncHandler());
-router
-  .route("/:postId/user/:userId/favorite")
-  .post(asyncHandler())
-  .delete(asyncHandler());
+router.route("/:postId/user/:userId/clap").post(asyncHandler(reactionPost));
 router
   .route("/:postId/user/:userId/thoughtful")
-  .post(asyncHandler())
-  .delete(asyncHandler());
+  .post(asyncHandler(reactionPost));
+router.route("/:postId/user/:userId/favorite").post(asyncHandler(reactionPost));
+router
+  .route("/:postId/user/:userId/thoughtful")
+  .post(asyncHandler(reactionPost));
 
 export default router;

@@ -39,7 +39,7 @@ const router = express.Router();
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const users = await UserModel.find();
+    const users = await UserModel.find().populate("posts");
 
     if (!users) next(new NotFoundError("User not found"));
 
@@ -241,8 +241,6 @@ router.get(
       "area",
       "image",
     ];
-    const data = { fields };
-    const 
   })
 );
 
