@@ -3,8 +3,51 @@ import express from "express";
 import UserModel from "../database/mongo/models/UserModel.js";
 import { asyncHandler } from "../core/asyncHandler.js";
 
-const auth = express.Router();
-auth.post(
+import pdf from "html-pdf";
+const safe = express.Router();
+safe.get(
+  "/:id/pdf",
+  asyncHandler(async (req, res, next) => {
+    const user = await UserModel.findById(req.params.id);
+    const html = `<div><h1 style="text-align:center; color:#0073b1">Linkedin</h1>
+        <div style="display:flex; justify-content:center; background-color: #3689d1;padding:100px;
+        background-image: url("https://www.transparenttextures.com/patterns/connected.png")">
+    
+        <div >
+          <h1>CV</h1>
+        <div style="display:flex">
+          <img style="margin-right:10px; border-radius:50%" heigth=100 src=${user.image}/> <p>${user.area}</>
+        </div>
+          <h2>${user.name} ${user.surname}</h2>
+          <hr />
+          <br>
+          <h4 class="head">Experiences :</h4>
+          <ul style="list-style:none">
+            <li>${user.experiences}</li>
+    
+          </ul>
+          <h4>About me : </h4>
+          <p>${user.bio}</p>
+    
+        </div>
+        <div ></div>
+        <div >
+    
+        </div>
+              </div>`;
+    const options = { format: "Letter" };
+    res.setHeader("Content-Disposition", "attachment; filename=cv.pdf");
+    res.set("Content-Type", "application/pdf");
+    pdf.create(html, options).toStream(function (err, stream) {
+      if (err) {
+        console.log(err);
+      }
+      stream.pipe(res);
+    });
+  })
+);
+
+safe.post(
   "/register", //creating a new user
   asyncHandler(async (req, res, next) => {
     const newUser = await UserModel.create(req.body);
@@ -23,7 +66,7 @@ auth.post(
     }
   })
 );
-auth.post(
+safe.post(
   "/login",
   asyncHandler(async (req, res, next) => {
     console.log({ user: req.body.username, pw: req.body.password });
@@ -58,4 +101,4 @@ auth.post(
   })
 );
 
-export default auth;
+export default safe;

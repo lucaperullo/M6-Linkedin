@@ -16,7 +16,16 @@ const postSchema = new Schema(
     img: {
       type: String,
     },
-    userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    user_picture: {
+      type: String,
+      required: true,
+      ref: "User",
+    },
     comments: [CommentSchema],
     likes: [],
   },

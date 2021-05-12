@@ -9,8 +9,6 @@ export default async function verifyToken(req, res, next) {
 
     next();
   } catch (error) {
-    const token = req.headers.authorization.split(" ")[1];
-    console.log(token);
     return res.status(401).json({
       status: true,
       message: "Your session is not valid",
