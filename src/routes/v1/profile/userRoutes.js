@@ -392,4 +392,23 @@ router.get("/:id/profilePDF", async (req, res, next) => {
   }
 });
 
+router.get(
+  "/:userId/experiences/CSV",
+  asyncHandler(async (req, res, next) => {
+    const { experiences } = await UserModel.findById(req.params.userId);
+    const fields = [
+      "id",
+      "role",
+      "company",
+      "startDate",
+      "endDate",
+      "description",
+      "area",
+      "image",
+    ];
+    const data = { fields };
+    const 
+  })
+);
+
 export default router;
