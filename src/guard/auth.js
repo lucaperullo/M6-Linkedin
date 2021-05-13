@@ -79,7 +79,7 @@ safe.post(
     const user = await UserModel.find({
       $and: [
         {
-          $or: [{ username: req.body.username }, { email: req.body.username }],
+          $or: [{ username: req.body.username }, { email: req.body.email }],
         },
         { password: req.body.password },
       ],
