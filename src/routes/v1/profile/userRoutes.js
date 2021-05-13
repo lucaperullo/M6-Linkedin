@@ -57,7 +57,7 @@ router.get(
     console.log(user._id);
 
     await axios
-      .get(`http://localhost:5000/v1/users/${user._id}`, {
+      .get(`https://linkedinnn.herokuapp.com/v1/users/${user._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
