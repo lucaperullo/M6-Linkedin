@@ -35,7 +35,7 @@ export const reactionPost = async (req, res, next) => {
     );
     res.status(201).send(editedPost);
   } else {
-    const deleteLike = await postModel.findByIdAndUpdate(
+    const deleteReaction = await postModel.findByIdAndUpdate(
       req.params.postId,
       {
         $pull: {
@@ -48,6 +48,6 @@ export const reactionPost = async (req, res, next) => {
         new: true,
       }
     );
-    res.status(200).send(deleteLike);
+    res.status(200).send(deleteReaction);
   }
 };
