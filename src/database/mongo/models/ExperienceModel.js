@@ -19,7 +19,10 @@ export const ExperienceSchema = new Schema({
   },
   endDate: {
     type: Date,
-    required: true,
+  },
+  currentlyWorking: {
+    type: Boolean,
+    default: false,
   },
   description: {
     type: String,
