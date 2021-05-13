@@ -58,11 +58,28 @@ export const uploadImagePostMddw = multer({
   },
 });
 
+// export const createNewPost = async (req, res, next) => {
+//   if (!req.params.userId)
+//     next(
+//       new BadRequestError("only user registered can post, user need to have ID")
+//     );
+//     const user = await UserModel.findById(req.params.userId);
+//     const post = {
+//       ...req.body,
+//       userId: req.params.userId,
+//       user_picture: user.image,
+//     };
+//     const newPost = new postModel(post);
+//     await newPost.save();
+//     res.status(201).send(newPost);
+// };
+
 export const createNewPost = async (req, res, next) => {
   if (!req.params.userId)
     next(
       new BadRequestError("only user registered can post, user need to have ID")
     );
+  if (!req.file) {
     const user = await UserModel.findById(req.params.userId);
     const post = {
       ...req.body,
@@ -72,37 +89,20 @@ export const createNewPost = async (req, res, next) => {
     const newPost = new postModel(post);
     await newPost.save();
     res.status(201).send(newPost);
+  } else {
+    const user = await UserModel.findById(req.params.userId);
+    console.log(req);
+    const post = {
+      ...req.body,
+      userId: req.params.userId,
+      user_picture: user.image,
+      img: req.file.path,
+    };
+    const newPost = new postModel(post);
+    await newPost.save();
+    res.status(201).send(newPost);
+  }
 };
-
-// export const createNewPost = async (req, res, next) => {
-//   if (!req.params.userId)
-//     next(
-//       new BadRequestError("only user registered can post, user need to have ID")
-//     );
-//   if (!req.file) {
-//     const user = await UserModel.findById(req.params.userId);
-//     const post = {
-//       ...req.body,
-//       userId: req.params.userId,
-//       user_picture: user.image,
-//     };
-//     const newPost = new postModel(post);
-//     await newPost.save();
-//     res.status(201).send(newPost);
-//   } else {
-//     const user = await UserModel.findById(req.params.userId);
-//     console.log(req);
-//     const post = {
-//       ...req.body,
-//       userId: req.params.userId,
-//       user_picture: user.image,
-//       img: req.file.path,
-//     };
-//     const newPost = new postModel(post);
-//     await newPost.save();
-//     res.status(201).send(newPost);
-//   }
-// };
 
 export const postImage = async (req, res, next) => {
   const isUser = await UserModel.findById(req.params.userId);
@@ -111,21 +111,21 @@ export const postImage = async (req, res, next) => {
       new UnauthorizedError(
         `Sorry you need to specified your credentials, user._id. in order to post image`
       )
-    );
-  const oldPost = await postModel.findById(req.params.postId);
-  if (!oldPost)
-    next(
-      new BadRequestError(
-        `Wrong postId please check it in order to add imageURL`
-      )
-    );
-  oldPost.toObject();
-  if (req.params.userId != oldPost.userId)
-    next(
-      new ForbiddenError(
-        `Sorry you are not allow to Post Image in behalf of ${oldPost.username}`
-      )
-    );
+    );  
+  // const oldPost = await postModel.findById(req.params.postId);
+  // if (!oldPost)
+  //   next(
+  //     new BadRequestError(
+  //       `Wrong postId please check it in order to add imageURL`
+  //     )
+  //   );
+  // oldPost.toObject();
+  // if (req.params.userId != oldPost.userId)
+  //   next(
+  //     new ForbiddenError(
+  //       `Sorry you are not allow to Post Image in behalf of ${oldPost.username}`
+  //     )
+  //   );
   const addingImageURL = await postModel.findOneAndUpdate(
     {
       _id: req.params.postId,

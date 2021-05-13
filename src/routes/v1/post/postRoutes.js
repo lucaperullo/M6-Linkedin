@@ -23,10 +23,11 @@ router
   .route("/:userId")
   .get(asyncHandler(getAllPostsByUser)) //  Ok
   .post(asyncHandler(createNewPost)) // Ok
-  .post(asyncHandler(postImage)) // *
+  .post(asyncHandler(postImage)); // *
 
 router
   .route("/:postId/user/:userId")
+  .post(asyncHandler(createNewPost))
   .post(uploadImagePostMddw.single("imagePost"), asyncHandler(postImage)) // Ok
   .get(asyncHandler(getPostByID)) //Ok
   .put(asyncHandler(editPost)) // Ok
