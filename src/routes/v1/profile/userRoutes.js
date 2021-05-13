@@ -9,7 +9,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { extname } from "path";
 import jwt from "jsonwebtoken";
-import PDFDocument from "pdfkit";
+
 import axios from "axios";
 const cloudStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
@@ -57,7 +57,11 @@ router.get(
     console.log(user._id);
 
     await axios
-      .get(`http://localhost:5000/v1/users/${user._id}`)
+      .get(`http://localhost:5000/v1/users/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         const updatedUser = response.data;
         res.status(200).send(updatedUser);
