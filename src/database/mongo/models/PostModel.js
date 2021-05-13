@@ -9,10 +9,7 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    username: {
-      type: String,
-      required: true,
-    },
+
     img: {
       type: String,
     },
