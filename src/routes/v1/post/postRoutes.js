@@ -24,7 +24,6 @@ router
   .get(asyncHandler(getAllPostsByUser)) //  Ok
   .post(asyncHandler(createNewPost)) // Ok
   .post(asyncHandler(postImage)) // *
-  .post(asyncHandler(createNewPost)); // Ok
 
 router
   .route("/:postId/user/:userId")
