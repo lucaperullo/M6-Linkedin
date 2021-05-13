@@ -30,10 +30,10 @@ export const ExperienceSchema = new Schema({
     type: String,
     required: true,
   },
-  // experience_username: {
-  //   type: String,
-  //   required: true,
-  // },
+  experience_username: {
+    type: String,
+    required: true,
+  },
   image: {
     type: String,
     default:

@@ -3,6 +3,31 @@ import { CommentSchema } from "./CommentModel.js";
 
 const { Schema, model } = mongoose;
 
+// const LikeSchema = new Schema({
+//   userId: { type: mongoose.Types.ObjectId, ref: "User" },
+// });
+
+// const ClapSchema = new Schema(
+//   {
+//     userId: { type: mongoose.Types.ObjectId, ref: "User" },
+//   },
+//   { timestamps: true }
+// );
+
+// const ThoughtfulSchema = new Schema(
+//   {
+//     userId: { type: mongoose.Types.ObjectId, ref: "User" },
+//   },
+//   { timestamps: true }
+// );
+
+// const FavoritesSchema = new Schema(
+//   {
+//     userId: { type: mongoose.Types.ObjectId, ref: "User" },
+//   },
+//   { timestamps: true }
+// );
+
 const postSchema = new Schema(
   {
     text: {
@@ -25,6 +50,9 @@ const postSchema = new Schema(
     },
     comments: [CommentSchema],
     likes: [],
+    claps: [],
+    thoughtful: [],
+    favorites: [],
   },
   { timestamps: true }
 );

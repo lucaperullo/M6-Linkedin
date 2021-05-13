@@ -39,7 +39,7 @@ const router = express.Router();
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const users = await UserModel.find();
+    const users = await UserModel.find().populate("posts");
 
     if (!users) next(new NotFoundError("User not found"));
 
@@ -230,5 +230,22 @@ router.put("/:id/upload", cloudMulter.single("img"), async (req, res, next) => {
     res.status(500).send("Something went bad!");
   }
 });
+
+router.get(
+  "/:userId/experiences/CSV",
+  asyncHandler(async (req, res, next) => {
+    const { experiences } = await UserModel.findById(req.params.userId);
+    const fields = [
+      "id",
+      "role",
+      "company",
+      "startDate",
+      "endDate",
+      "description",
+      "area",
+      "image",
+    ];
+  })
+);
 
 export default router;

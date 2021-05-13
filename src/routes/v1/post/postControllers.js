@@ -17,7 +17,7 @@ import {
 
 //This get all posts should be to populate the feed // Missing pagination here!!!!!!
 export const getAllPosts = async (req, res, next) => {
-  const posts = await postModel.find().populate("user");
+  const posts = await postModel.find().populate("userId");
   res.status(200).send(posts);
 };
 
