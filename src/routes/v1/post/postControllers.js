@@ -1,7 +1,6 @@
 import express from "express";
 import q2m from "query-to-mongo";
 import multer from "multer";
-import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { extname } from "path";
@@ -65,12 +64,8 @@ export const createNewPost = async (req, res, next) => {
       new BadRequestError("only user registered can post, user need to have ID")
     );
   if (!req.file) {
-    const user = await UserModel.findById(req.params.userId);
-    const post = {
-      ...req.body,
-      userId: req.params.userId,
-      user_picture: user.image,
-    };
+    console.log(req.file);
+    const post = { ...req.body, userId: req.params.userId };
     const newPost = new postModel(post);
     await newPost.save();
     res.status(201).send(newPost);
