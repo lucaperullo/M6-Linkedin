@@ -58,11 +58,28 @@ export const uploadImagePostMddw = multer({
   },
 });
 
+export const createNewPost = async (req, res, next) => {
+  if (!req.params.userId)
+    next(
+      new BadRequestError("only user registered can post, user need to have ID")
+    );
+    const user = await UserModel.findById(req.params.userId);
+    const post = {
+      ...req.body,
+      userId: req.params.userId,
+      user_picture: user.image,
+    };
+    const newPost = new postModel(post);
+    await newPost.save();
+    res.status(201).send(newPost);
+};
+
 // export const createNewPost = async (req, res, next) => {
 //   if (!req.params.userId)
 //     next(
 //       new BadRequestError("only user registered can post, user need to have ID")
 //     );
+//   if (!req.file) {
 //     const user = await UserModel.findById(req.params.userId);
 //     const post = {
 //       ...req.body,
@@ -72,37 +89,20 @@ export const uploadImagePostMddw = multer({
 //     const newPost = new postModel(post);
 //     await newPost.save();
 //     res.status(201).send(newPost);
+//   } else {
+//     const user = await UserModel.findById(req.params.userId);
+//     console.log(req);
+//     const post = {
+//       ...req.body,
+//       userId: req.params.userId,
+//       user_picture: user.image,
+//       img: req.file.path,
+//     };
+//     const newPost = new postModel(post);
+//     await newPost.save();
+//     res.status(201).send(newPost);
+//   }
 // };
-
-export const createNewPost = async (req, res, next) => {
-  if (!req.params.userId)
-    next(
-      new BadRequestError("only user registered can post, user need to have ID")
-    );
-  if (!req.file) {
-    const user = await UserModel.findById(req.params.userId);
-    const post = {
-      ...req.body,
-      userId: req.params.userId,
-      user_picture: user.image,
-    };
-    const newPost = new postModel(post);
-    await newPost.save();
-    res.status(201).send(newPost);
-  } else {
-    const user = await UserModel.findById(req.params.userId);
-    console.log(req);
-    const post = {
-      ...req.body,
-      userId: req.params.userId,
-      user_picture: user.image,
-      img: req.file.path,
-    };
-    const newPost = new postModel(post);
-    await newPost.save();
-    res.status(201).send(newPost);
-  }
-};
 
 export const postImage = async (req, res, next) => {
   const isUser = await UserModel.findById(req.params.userId);
