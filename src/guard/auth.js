@@ -70,9 +70,6 @@ safe.post(
   "/login",
   asyncHandler(async (req, res, next) => {
     console.log({ user: req.body.username, pw: req.body.password });
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
 
     // const check = await UserModel.find({ password: password });
     // const check1 = await UserModel.find({ email: email });
@@ -81,7 +78,9 @@ safe.post(
 
     const user = await UserModel.find({
       $and: [
-        { $or: [{ username: req.body.username }, { email: req.body.email }] },
+        {
+          $or: [{ username: req.body.username }, { email: req.body.username }],
+        },
         { password: req.body.password },
       ],
     });
