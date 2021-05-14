@@ -111,21 +111,21 @@ export const postImage = async (req, res, next) => {
       new UnauthorizedError(
         `Sorry you need to specified your credentials, user._id. in order to post image`
       )
-    );
-  const oldPost = await postModel.findById(req.params.postId);
-  if (!oldPost)
-    next(
-      new BadRequestError(
-        `Wrong postId please check it in order to add imageURL`
-      )
-    );
-  oldPost.toObject();
-  if (req.params.userId != oldPost.userId)
-    next(
-      new ForbiddenError(
-        `Sorry you are not allow to Post Image in behalf of ${oldPost.username}`
-      )
-    );
+    );  
+  // const oldPost = await postModel.findById(req.params.postId);
+  // if (!oldPost)
+  //   next(
+  //     new BadRequestError(
+  //       `Wrong postId please check it in order to add imageURL`
+  //     )
+  //   );
+  // oldPost.toObject();
+  // if (req.params.userId != oldPost.userId)
+  //   next(
+  //     new ForbiddenError(
+  //       `Sorry you are not allow to Post Image in behalf of ${oldPost.username}`
+  //     )
+  //   );
   const addingImageURL = await postModel.findOneAndUpdate(
     {
       _id: req.params.postId,
