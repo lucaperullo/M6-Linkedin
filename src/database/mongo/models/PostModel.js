@@ -23,9 +23,11 @@ const postSchema = new Schema(
     },
     comments: [CommentSchema],
     likes: [],
-    claps: [],
-    thoughtful: [],
-    favorites: [],
+    celebrates: [],
+    supports: [],
+    loves: [],
+    insightfuls: [],
+    curiouss: [],
   },
   { timestamps: true }
 );
