@@ -19,6 +19,25 @@ export const reactionPost = async (req, res, next) => {
   const newArray = `${finalReaction}`;
 
   if (!post[finalReaction].includes(req.params.userId)) {
+    const removed = await postModel.findOneAndUpdate(
+      {
+        _id: req.params.postId,
+      },
+      {
+        $pull: {
+          likes: req.params.userId,
+          loves: req.params.userId,
+          insightfuls: req.params.userId,
+          celebrates: req.params.userId,
+          supports: req.params.userId,
+          curiouss: req.params.userId,
+        },
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
     const editedPost = await postModel.findOneAndUpdate(
       {
         _id: req.params.postId,
@@ -33,7 +52,7 @@ export const reactionPost = async (req, res, next) => {
         new: true,
       }
     );
-    res.status(201).send(editedPost);
+    return res.status(201).send(editedPost);
   } else {
     const deleteReaction = await postModel.findByIdAndUpdate(
       req.params.postId,
@@ -48,6 +67,6 @@ export const reactionPost = async (req, res, next) => {
         new: true,
       }
     );
-    res.status(200).send(deleteReaction);
+    return res.status(200).send(deleteReaction);
   }
 };

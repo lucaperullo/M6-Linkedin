@@ -23,7 +23,7 @@ router
   .route("/:userId")
   .get(asyncHandler(getAllPostsByUser)) //  Ok
   .post(asyncHandler(createNewPost)) // Ok
-  // .post(asyncHandler(postImage)); // *
+  .post(asyncHandler(postImage)); // *
 
 router
   .route("/:postId/user/:userId")
@@ -45,13 +45,14 @@ router
 // *****************LIKE, CLAP, IDEA, FAVORITES, THOUGHTFUL => ROUTES ***************
 
 router.route("/:postId/user/:userId/like").post(asyncHandler(reactionPost));
-router.route("/:postId/user/:userId/clap").post(asyncHandler(reactionPost));
 router
-  .route("/:postId/user/:userId/thoughtful")
+  .route("/:postId/user/:userId/celebrate")
   .post(asyncHandler(reactionPost));
-router.route("/:postId/user/:userId/favorite").post(asyncHandler(reactionPost));
 router
-  .route("/:postId/user/:userId/thoughtful")
+  .route("/:postId/user/:userId/insightful")
   .post(asyncHandler(reactionPost));
+router.route("/:postId/user/:userId/love").post(asyncHandler(reactionPost));
+router.route("/:postId/user/:userId/curious").post(asyncHandler(reactionPost));
+router.route("/:postId/user/:userId/support").post(asyncHandler(reactionPost));
 
 export default router;
